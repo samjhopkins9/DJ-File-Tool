@@ -5,7 +5,7 @@ filetype="mp3"
 function check_file(){
     if [ "${filename:(-3)}" = "$filetype" ]
     then
-        cp "$filename" ~/new_"$filetype"s
+        cp "$filename" "~/Library/Mobile\ Documents/com~apple~CloudDocs/ZBT DJ Song Pool/Unsorted"
         rm -r "$filename"
     else
         arb=""
@@ -36,14 +36,13 @@ function sort_files(){
         else
             touch temp.py
         fi
-        cat "../Documents/Programming/DJ Tools/songcatalogskeleton.py" >> temp.py
+        cat "~/Library/Mobile\ Documents/com~apple~CloudDocs/ZBT DJ Song Pool/DJ File Tool/songsorter.py" >> temp.py
         if [ "${f:(-3)}" = "$filetype" ]
         then
             echo "load_song(\"$f\")" >> temp.py
             echo "sort_song(song1(\"$f\"))" >> temp.py
             echo "with open(\"playlists.txt\", \"w\") as plists:" >> temp.py
-            echo "      pliststring = str(song1(\"$f\").playlists)" >> temp.py
-            echo "      plists.write(pliststring)" >> temp.py
+            echo "      plists.write(str(playlists))" >> temp.py
             echo "      plists.close()" >> temp.py
             echo ""
         else
@@ -64,20 +63,23 @@ function sort_files(){
                 loadingstring="$loadingstring"""${playlists:c:1}""
             fi
         done
-        echo "load_song(\"../../../sorted_mp3s/All/$f\")" >> "../Documents/Programming/DJ Tools/songcatalog.py"
-        echo "song1(\"../../../sorted_mp3s/All/$f\").playlists = $playlists" >> "../Documents/Programming/DJ Tools/songcatalog.py"
         for i in "${playlistsarr[@]}"; do
-            cp "$f" "../sorted_mp3s/"$i""
+            cp "$f" "~/Library/Mobile\ Documents/com~apple~CloudDocs/ZBT DJ Song Pool/"$i""
         done
         rm "$f"
     done
 }
 
-cd ../../..
-cd Music
-cd "Amazon Music"
+# Changes to downloads folder, copies all mp3s in all directories
+cd ~/Downloads
 check_files
-cd ~/new_"$filetype"s
+
+# Changes to Amazon Music folder, copies all mp3s in all directories
+cd ~/Music/"Amazon Music"
+check_files
+
+# Changes to ZBT DJ Song Pool folder within Shared directory in iCloud folder
+cd "~/Library/Mobile\ Documents/com~apple~CloudDocs/Shared/ZBT DJ Song Pool/Unsorted"
 sort_files
 
 
