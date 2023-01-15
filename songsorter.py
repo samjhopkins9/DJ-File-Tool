@@ -11,7 +11,9 @@ def sort_song(song):
     print("5. Trance/Prog House")
     print("6. Trap/Dubstep")
     print("7. Drum & Bass")
-    print("8. Originals")
+    print("8. Other")
+    print("9. Originals")
+    print("10. REDWAVE.")
     pln = input("How many playlists would you like to add this song to?: ")
     range1 = int(pln)
     playlists.append("All")
@@ -32,7 +34,11 @@ def sort_song(song):
         elif i == "7":
             playlists.append("Drum&Bass")
         elif i == "8":
+            playlists.append("Other")
+        elif i == "9":
             playlists.append("Original")
+        elif i == "10":
+            playlists.append("REDWAVE.")
         else:
             print("Invalid choice. Try again.")
             sort_song(song);
