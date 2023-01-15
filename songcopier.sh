@@ -1,11 +1,11 @@
 #!/bin/bash
-
 filetype="mp3"
+basepython=$(<songsorter.py)
 
 function check_file(){
     if [ "${filename:(-3)}" = "$filetype" ]
     then
-        cp "$filename" "~/Library/Mobile\ Documents/com~apple~CloudDocs/ZBT DJ Song Pool/Unsorted"
+        cp "$filename" ""
         rm -r "$filename"
     else
         arb=""
@@ -30,56 +30,51 @@ function check_files(){
 function sort_files(){
     for f in *
     do
-        if [[ -e temp.py ]]; then
-            rm temp.py
-            touch temp.py
-        else
-            touch temp.py
-        fi
-        cat "~/Library/Mobile\ Documents/com~apple~CloudDocs/ZBT DJ Song Pool/DJ File Tool/songsorter.py" >> temp.py
         if [ "${f:(-3)}" = "$filetype" ]
         then
-            echo "load_song(\"$f\")" >> temp.py
-            echo "sort_song(song1(\"$f\"))" >> temp.py
+            if [[ -e temp.py ]]; then
+                rm temp.py
+                touch temp.py
+            else
+                touch temp.py
+            fi
+            echo "$basepython" >> temp.py
+            echo "sort_song(\"$f\")" >> temp.py
             echo "with open(\"playlists.txt\", \"w\") as plists:" >> temp.py
             echo "      plists.write(str(playlists))" >> temp.py
             echo "      plists.close()" >> temp.py
             echo ""
+            python3 temp.py
+            playlists=$(<playlists.txt)
+            loadingstring=""
+            for (( c=0; c<${#playlists}; c++ )); do
+                if [ "${playlists:c:1}" == "[" ] || [ "${playlists:c:1}" == "'" ] ||  [ "${playlists:c:1}" == "," ]; then
+                    arb=""
+                elif [ "${playlists:(c-1):1}" == "," ] || [ "${playlists:c:1}" == "]" ]; then
+                    loadingstring=""
+                else
+                    loadingstring=""$loadingstring""${playlists:c:1}""
+                fi
+            done
+            for i in "${playlistsarr[@]}"; do
+                cp "$f" "~/Music/sorted_mp3s/"$i""
+            done
+            rm "$f"
+            if [[ -e temp.py ]]; then
+                rm temp.py
+                touch temp.py
+            else
+                touch temp.py
+            fi
         else
             arb=""
         fi
-        python3 temp.py
-        playlists=`cat playlists.txt`
-        playlistsarr=()
-        loadingstring=""
-        for (( c=0; c<${#playlists}; c++ ))
-        do
-            if [ "${playlists:c:1}" == "[" ] || [ "${playlists:c:1}" == "'" ] ||  [ "${playlists:c:1}" == "," ]; then
-                arb=""
-            elif [ "${playlists:(c-1):1}" == "," ] || [ "${playlists:c:1}" == "]" ]; then
-                playlistsarr+=( $loadingstring )
-                loadingstring=""
-            else
-                loadingstring="$loadingstring"""${playlists:c:1}""
-            fi
-        done
-        for i in "${playlistsarr[@]}"; do
-            cp "$f" "~/Library/Mobile\ Documents/com~apple~CloudDocs/ZBT DJ Song Pool/"$i""
-        done
-        rm "$f"
     done
 }
 
-# Changes to downloads folder, copies all mp3s in all directories
-cd ~/Downloads
+cd "~/Music/Amazon Music"
 check_files
-
-# Changes to Amazon Music folder, copies all mp3s in all directories
-cd ~/Music/"Amazon Music"
-check_files
-
-# Changes to ZBT DJ Song Pool folder within Shared directory in iCloud folder
-cd "~/Library/Mobile\ Documents/com~apple~CloudDocs/Shared/ZBT DJ Song Pool/Unsorted"
+cd "~/Music/new_mp3s"
 sort_files
 
 
