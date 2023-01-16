@@ -1,10 +1,18 @@
 #!/bin/bash
 
+
+
+# Username variable stores the name of your directory within the Users directory
+username="samjhopkins9"
 # Filetype variable declares which kind of file will be copied
 filetype="mp3"
-download_folder="/Users/samjhopkins9/Music/Amazon Music" # Folder which the program will search for mp3s
-unsorted_folder="/Users/samjhopkins9/Music/new_"$filetype"s" # Folder which the program will copy mp3s into from download folder
-sorted_folder="/Users/samjhopkins9/Music/sorted_"$filetype"s" # Folder which the program will organize songs into, expecting folders corresponding with each of the playlist names in the program to exist within the folder. Playlist names are contained in "songsorter.py".
+# All folders whose names are stored in the three below variables are assumed to exist
+download_folder="/Users/"$username"/Music/Amazon Music" # Folder which the program will search for files
+unsorted_folder="/Users/"$username"/Music/new_"$filetype"s" # Folder which the program will copy files into from download folder
+sorted_folder="/Users/"$username"/Music/sorted_"$filetype"s" # Folder which the program will organize songs into, expecting folders corresponding with each of the playlist names in the program to exist within the folder. Playlist names are contained in "songsorter.py".
+
+
+
 # Function loops through all files and directories within a folder and moves files of the specified type to a new folder within the Music directory
 function check_files {
     for path in *; do
@@ -93,7 +101,7 @@ function copy_file {
     rm "$f"
 }
 
-# Function loops through all files within a directory, checks if they are the appropriate filetype, and if so, runs the above code for copying the file into organized folders
+# Function loops through all files within unorganized directory, checks if they are the appropriate filetype, and if so, runs the above code for copying the file into organized folders
 function sort_files {
     for f in *
     do
@@ -105,11 +113,11 @@ function sort_files {
     done
 }
 
-# Runs "Check Files" within Amazon Music folder to find and copy all mp3s within Amazon Music into the new_"filetype"s folder within the Music directory.
-cd $download_folder
+# Runs function to find and copy all mp3s from the download folder into the new_"filetype"s folder within the Music directory.
+cd "$download_folder"
 check_files
-# Changes directory to new_"filetype"s and runs function for copying all new files into organized folders
-cd $unsorted_folder
+# Runs function to copy all new files from unorganized folder into organized folders
+cd "$unsorted_folder"
 sort_files
 
 
