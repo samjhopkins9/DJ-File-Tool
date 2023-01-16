@@ -1,19 +1,16 @@
 #!/bin/bash
 
-
-
-# Username variable stores the name of your directory within the Users directory
+# Username variable stores your username as it appears on your computer
 username="samjhopkins9"
 # Filetype variable declares which kind of file will be copied
 filetype="mp3"
-# All folders whose names are stored in the three below variables are assumed to exist
-download_folder="/Users/"$username"/Music/Amazon Music" # Folder which the program will search for files
-unsorted_folder="/Users/"$username"/Music/new_"$filetype"s" # Folder which the program will copy files into from download folder
-sorted_folder="/Users/"$username"/Music/sorted_"$filetype"s" # Folder which the program will organize songs into, expecting folders corresponding with each of the playlist names in the program to exist within the folder. Playlist names are contained in "songsorter.py".
+# All folders whose names are declared in the three variables below are assumed to exist
+download_folder="/Users/"$username"/Music/Amazon Music" # Folder which program will search for new files
+unsorted_folder="/Users/"$username"/Music/new_"$filetype"s" # Folder into which program will copy new files from download folder
+sorted_folder="/Users/"$username"/Music/sorted_"$filetype"s" # Folder in which the program will organize songs into genre folders. The script will handle the creation of these.
 
 
-
-# Function loops through all files and directories within a folder and moves files of the specified type to a new folder within the Music directory
+# Function loops through all files and directories within a folder and moves files of the specified type to the declared unsorted folder
 function check_files {
     for path in *; do
         if [[ -d $path ]]; then
@@ -33,7 +30,6 @@ function check_files {
     done
 }
 
-
 # Function checks if a python script called temp.py exists; if it does, it replaces it with an empty copy, and if it doesn't, it creates a new version.
 function if_e_py {
     if [[ -e temp.py ]]; then
@@ -48,7 +44,7 @@ function if_e_py {
 playlists=""
 # playlistsarr is a bash array containing the same items
 playlistsarr=()
-# Function loops through playlists string for a song, character by character, to separate the substrings into an array of playlist names
+# Function loops through playlists array string for a song, character by character, to separate the substrings into an array of playlist names
 function parse_playlists {
     # String to load characters onto incrimentally for each playlist name in the list
     loadingstring=""
@@ -91,12 +87,25 @@ function run_python {
     rm playlists.txt
 }
 
+# Function checks if a folder exists within the sorted folder for each playlist selected to move a song file into. If it does not, it creates the folder. Function ensures that script does not attempt to move files into nonexistent folders.
+function if_e_pl {
+    for (( c=0; c<${#playlistsarr[@]}; c++)); do
+        # Checks if a directory with the corresponding playlist name exists within the sorted folder; if not, it creates one
+        if [[ -d ""$sorted_folder"/"${playlists[c]}"" ]]; then
+            continue
+        else
+            mkdir ""$sorted_folder"/"${playlists[c]}""
+        fi
+    done
+}
+
 # Function runs temp.py on a file to ask user for playlists, parses the contents of playlists.txt into a bash array, copies the file into the folder corresponding to each of the playlists by looping through the array in bash, then removes the file from its original directory.
 function copy_file {
     run_python
     parse_playlists
+    if_e_pl
     for p in "${playlistsarr[@]}"; do
-        cp "$f" "~/Music/sorted_mp3s/"$p""
+        cp "$f" ""$unsorted_folder"/"$p""
     done
     rm "$f"
 }
