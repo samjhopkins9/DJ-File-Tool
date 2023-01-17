@@ -1,7 +1,7 @@
 # File Copier/Organizer/Searcher for DJs
 
     ## Description
-     - This tool is meant to help DJs keep up with the organization of a large database of songs.
+     - This tool is meant to help DJs keep up with the organization of a large database of songs. It contains two components.
      - The organizer component loops through a folder of downloaded song files, checking all nested folders, and copies all files of a specified type into a single unorganized folder. Then, for each song, asks the user which folder(s) they would like it to, copies it into the specified folder(s), and deletes it from the unorganized folder.
      - The searcher component looks through a spreadsheet of songs, inputted by the user, and automatically opens an Amazon tab searching for each one.
     
