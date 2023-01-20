@@ -3,12 +3,11 @@
 # Username variable stores your username as it appears on your computer
 username="samjhopkins9"
 # Filetype variable declares which kind of file will be copied
-filetype="mp3"
+filetype="m4p"
 # All folders whose names are declared in the three variables below are assumed to exist
-download_folder="/Users/"$username"/Music/Amazon Music" # Folder which program will search for new files
+download_folder="/Users/"$username"/Music/Music/Media.localized/Apple Music/" # Folder which program will search for new files
 unsorted_folder="/Users/"$username"/Music/new_"$filetype"s" # Folder into which program will copy new files from download folder
 sorted_folder="/Users/"$username"/Music/sorted_"$filetype"s" # Folder in which the program will organize songs into genre folders. The script will handle the creation of these.
-
 
 # Function loops through all files and directories within a folder and moves files of the specified type to the declared unsorted folder
 function check_files {
@@ -22,7 +21,7 @@ function check_files {
             # If the extension of the filename match with the filetype, moves it to an unorganized folder within the Music directory
             if [ "${path:(-3)}" = "$filetype" ]; then
                 cp "$path" $unsorted_folder
-                rm "$path"
+                # rm "$path"
             else
                 arb="" # Arbitrary; exists because bash only allows "if-else" statements
             fi
@@ -50,7 +49,7 @@ function parse_playlists {
     loadingstring=""
     for (( c=0; c<${#playlists}; c++ )); do
         # Skips opening brackets and quotes within lists; these do not need to be within the strings in the bash array
-        if [ "${playlists:c:1}" == "[" ] || [ "${playlists:c:1}" == "'" ]]; then
+        if [ "${playlists:c:1}" == "[" ] || [ "${playlists:c:1}" == "\"" ]]; then
             arb=""
         # On commas and closing brackets, where a full playlist name has been read in, it adds the string to the array, and resets it to empty
         elif [ "${playlists:c:1}" == "," ] || [ "${playlists:c:1}" == "]" ]; then
@@ -72,7 +71,7 @@ function run_python {
     # Appends contents of "songsorter.py" to temp.py, which contains the empty array and the "sort_songs" function
     echo "$basepython" >> temp.py
     # Appends code to tempy.py calling the "sort_song" function with a specified filename, asking the user which playlists they would like to add it to.
-    echo "sort_song(\"$f\")" >> temp.py
+    # echo "sort_song(\"$f\")" >> temp.py # if commented out, each song is added to "All" playlist by default and user is not prompted
     # Appends code which creates a file called "playlists.txt" and writes the whole array of playlists to it as a string.
     echo "with open(\"playlists.txt\", \"w\") as plists:" >> temp.py
     echo "      plists.write(str(playlists))" >> temp.py
@@ -107,7 +106,7 @@ function copy_file {
     for p in "${playlistsarr[@]}"; do
         cp "$f" ""$unsorted_folder"/"$p""
     done
-    rm "$f"
+    # rm "$f"
 }
 
 # Function loops through all files within unorganized directory, checks if they are the appropriate filetype, and if so, runs the above code for copying the file into organized folders

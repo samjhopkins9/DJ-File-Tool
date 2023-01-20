@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # Playlists array is declared empty, to contain names of playlists to add a song file to
-playlists = []
+playlists = ["All"]
 
 # Function takes a song filename as an input, prints its name, and prompts the user to select which playlist folders they would like to add it to, and how many. It then adds the names of the folders to the playliss array, which later is read by the Bash script and used to copy the songs into organized directories.
 def sort_song(song):
@@ -21,7 +21,6 @@ def sort_song(song):
     pln = input("How many playlists would you like to add this song to?: ")
     range1 = int(pln)
     # All songs are automatically added to 'All' playlist
-    playlists.append("All")
     # Loops through number of playlists inputted by user
     for _ in range(range1):
         i = input("Enter playlist: ")
