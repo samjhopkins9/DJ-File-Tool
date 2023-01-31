@@ -19,6 +19,7 @@ unsorted_folder="/Users/"$username"/Music/new_"$filetype"s"
 sorted_folder="/Users/"$username"/Music/sorted_"$filetype"s"
 
 
+
 # Function loops through all files and directories within a folder and moves files of the specified type to the declared unsorted folder
 function check_files {
 
@@ -62,10 +63,12 @@ function if_e_py {
     
 } # End of if_e_py function
 
+
 # playlists variable contains the direct output of the whole array containing the playlists for a song file from the python scipt
 playlists=""
 # playlistsarr is a bash array containing the same items
 playlistsarr=()
+
 
 # Function loops through playlists array string for a song, character by character, to separate the substrings into an array of playlist names
 function parse_playlists {
@@ -94,8 +97,10 @@ function parse_playlists {
 
 } # End of parse_playlists function
 
+
 # basepython variable saves the contents of "songsorter.py" while still in project directory so that code is always copied into script, and can be accessed from any directory
 basepython=$(<songsorter.py)
+
 
 # Function creates a temporary python script, appends code to it with a filename as an input, runs it, then deletes the temporary files involved in the process.
 function run_python {
@@ -127,6 +132,7 @@ function run_python {
     
 } # End of run_python function
 
+
 # Function checks if a folder exists within the sorted folder for each playlist selected to move a song file into. If it does not, it creates the folder. Function ensures that script does not attempt to move files into nonexistent folders.
 function if_e_pl {
 
@@ -144,6 +150,7 @@ function if_e_pl {
     
 } # End of if_e_pl function
 
+
 # Function runs temp.py on a file to ask user for playlists, parses the contents of playlists.txt into a bash array, copies the file into the folder corresponding to each of the playlists by looping through the array in bash, then removes the file from its original directory.
 function copy_file {
 
@@ -158,6 +165,7 @@ function copy_file {
     
     rm "$f"
 }
+
 
 # Function loops through all files within unorganized directory, checks if they are the appropriate filetype, and if so, runs the above code for copying the file into organized folders
 function sort_files {
@@ -174,6 +182,7 @@ function sort_files {
     done
     
 } # End of sort_files function
+
 
 
 # Runs function to find and copy all mp3s from the download folder into the new_"filetype"s folder within the Music directory.
