@@ -8,10 +8,13 @@ username="samjhopkins9"
 filetype="mp3"
 
 # All folders whose names are declared in the three variables below are assumed to exist
+
 # Folder which program will search for new files
 download_folder="/Users/"$username"/Music/Amazon Music"
+
 # Folder into which program will copy new files from download folder
 unsorted_folder="/Users/"$username"/Music/new_"$filetype"s"
+
 # Folder in which the program will organize songs into genre folders. The script will handle the creation of these.
 sorted_folder="/Users/"$username"/Music/sorted_"$filetype"s"
 
