@@ -9,6 +9,7 @@ def sort_song(song):
 
     print(song)
     print("Playlists")
+    
     print("1. Hits/Throwbacks")
     print("2. Rap")
     print("3. Deep/Chill House")
