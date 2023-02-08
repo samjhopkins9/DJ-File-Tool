@@ -69,35 +69,6 @@ playlists=""
 # playlistsarr is a bash array containing the same items
 playlistsarr=()
 
-
-# Function loops through playlists array string for a song, character by character, to separate the substrings into an array of playlist names
-function parse_playlists {
-
-    # String to load characters onto incrimentally for each playlist name in the list
-    loadingstring=""
-    
-    for (( c=0; c<${#playlists}; c++ )); do
-    
-        # Skips opening brackets and quotes within lists; these do not need to be within the strings in the bash array
-        if [ "${playlists:c:1}" == "[" ] || [ "${playlists:c:1}" == "'" ]]; then
-            arb=""
-        
-        # On commas and closing brackets, where a full playlist name has been read in, it adds the string to the array, and resets it to empty
-        elif [ "${playlists:c:1}" == "," ] || [ "${playlists:c:1}" == "]" ]; then
-            playlistsarr+=( $loadingstring )
-            loadingstring=""
-            
-        # On all other characters, it appends the current character to the characters already in the string
-        else
-            loadingstring=""$loadingstring""${playlists:c:1}""
-            
-        fi
-        
-    done
-
-} # End of parse_playlists function
-
-
 # basepython variable saves the contents of "songsorter.py" while still in project directory so that code is always copied into script, and can be accessed from any directory
 basepython=$(<songsorter.py)
 
@@ -128,21 +99,52 @@ function run_python {
     
     # Deletes temp.py and playlists.txt
     rm temp.py
+    cat playlists.txt
+    echo ""
     rm playlists.txt
     
 } # End of run_python function
 
 
+# Function loops through playlists array string for a song, character by character, to separate the substrings into an array of playlist names
+function parse_playlists {
+
+    # String to load characters onto incrimentally for each playlist name in the list
+    loadingstring=""
+    
+    for (( c=0; c<${#playlists}; c++ )); do
+    
+        # Skips opening brackets and quotes within lists; these do not need to be within the strings in the bash array
+        if [ "${playlists:c:1}" = "[" ] || [ "${playlists:c:1}" = "'" ]; then
+            arb=""
+        
+        # On commas and closing brackets, where a full playlist name has been read in, it adds the string to the array, and resets it to empty
+        elif [ "${playlists:c:1}" = "," ] || [ "${playlists:c:1}" = "]" ]; then
+            echo $loadingstring
+            playlistsarr+=( $loadingstring )
+            loadingstring=""
+            
+        # On all other characters, it appends the current character to the characters already in the string
+        else
+            loadingstring=""$loadingstring""${playlists:c:1}""
+            
+        fi
+        
+    done
+
+} # End of parse_playlists function
+
+
 # Function checks if a folder exists within the sorted folder for each playlist selected to move a song file into. If it does not, it creates the folder. Function ensures that script does not attempt to move files into nonexistent folders.
 function if_e_pl {
 
-    for (( c=0; c<${#playlistsarr[@]}; c++)); do
+    for c in "${playlistsarr[@]}"; do
         # Checks if a directory with the corresponding playlist name exists within the sorted folder; if not, it creates one
-        if [[ -d ""$sorted_folder"/"${playlists[c]}"" ]]; then
+        if [[ -d ""$sorted_folder"/"$c"" ]]; then
             continue
         
         else
-            mkdir ""$sorted_folder"/"${playlists[c]}""
+            mkdir ""$sorted_folder"/"$c""
         
         fi
     
@@ -159,7 +161,7 @@ function copy_file {
     if_e_pl
     
     for p in "${playlistsarr[@]}"; do
-        cp "$f" ""$unsorted_folder"/"$p""
+        cp "$f" ""$sorted_folder"/"$p""
     
     done
     
