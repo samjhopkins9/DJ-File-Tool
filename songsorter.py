@@ -19,54 +19,52 @@ def sort_song(song):
     print("7. Drum & Bass")
     print("8. Other")
     print("9. Originals")
-    print("10. REDWAVE.")
     
-    # Asks user how many playlists to add so that it can prompt a correct number of times
-    pln = input("How many playlists would you like to add this song to?: ")
-    range1 = int(pln)
     
     # All songs are automatically added to 'All' playlist
     playlists.append("All")
     
-    # Loops through number of playlists inputted by user
-    for _ in range(range1):
-        i = input("Enter playlist: ")
+    i = input("Enter playlist: ")
         
-        if i == "1":
-            playlists.append("Hits_Throwbacks")
-            
-        elif i == "2":
-            playlists.append("Rap")
+    if i == "1":
+        playlists.append("Hits_Throwbacks")
+        return
         
-        elif i == "3":
-            playlists.append("Deep_ChillHouse")
+    elif i == "2":
+        playlists.append("Rap")
+        return
         
-        elif i == "4":
-            playlists.append("Tech_BassHouse")
-        
-        elif i == "5":
-            playlists.append("Trance_ProgHouse")
-        
-        elif i == "6":
-            playlists.append("Trap_Dubstep")
-        
-        elif i == "7":
-            playlists.append("Drum&Bass")
-        
-        elif i == "8":
-            playlists.append("Other")
-        
-        elif i == "9":
-            playlists.append("Original")
-            
-        elif i == "10":
-            playlists.append("REDWAVE.")
-            
-        # If a value that doesn't correspond to anything is inputted, the function is called recursively until they do
-        else:
-            print("Invalid choice. Try again.")
-            sort_song(song);
-        
-    # end of for loop
+    elif i == "3":
+        playlists.append("Deep_ChillHouse")
+        return
 
+    elif i == "4":
+        playlists.append("Tech_BassHouse")
+        return
+
+    elif i == "5":
+        playlists.append("Trance_ProgHouse")
+        return
+
+    elif i == "6":
+        playlists.append("Trap_Dubstep")
+        return
+
+    elif i == "7":
+        playlists.append("Drum&Bass")
+        return
+
+    elif i == "8":
+        playlists.append("Other")
+        return
+
+    elif i == "9":
+        playlists.append("Originals")
+        return
+
+    # If a value that doesn't correspond to anything is inputted, the function is called recursively until they do
+    else:
+        print("Invalid choice. Try again.")
+        sort_song(song)
+        
 # end of sort_song function

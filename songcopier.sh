@@ -99,8 +99,8 @@ function run_python {
     
     # Deletes temp.py and playlists.txt
     rm temp.py
-    cat playlists.txt
-    echo ""
+    # cat playlists.txt
+    # echo ""
     rm playlists.txt
     
 } # End of run_python function
@@ -120,7 +120,7 @@ function parse_playlists {
         
         # On commas and closing brackets, where a full playlist name has been read in, it adds the string to the array, and resets it to empty
         elif [ "${playlists:c:1}" = "," ] || [ "${playlists:c:1}" = "]" ]; then
-            echo $loadingstring
+            echo $f " -> " $loadingstring
             playlistsarr+=( $loadingstring )
             loadingstring=""
             
@@ -162,10 +162,12 @@ function copy_file {
     
     for p in "${playlistsarr[@]}"; do
         cp "$f" ""$sorted_folder"/"$p""
+        echo "Copying " "$f" " to " "$sorted_folder"/"$p"
     
     done
     
     rm "$f"
+    playlistsarr=()
 }
 
 

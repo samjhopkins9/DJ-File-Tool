@@ -4,7 +4,7 @@ import webbrowser as web
 
 
 # Opens "songs_to_search.csv"
-with open("songs_to_search.csv") as file:
+with open("songs_to_search.csv", encoding="latin-1") as file:
 
     # Loops through all lines in file
     for line in csv.reader(file):
