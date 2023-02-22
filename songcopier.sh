@@ -10,7 +10,7 @@ filetype="mp3"
 # All folders whose names are declared in the three variables below are assumed to exist
 
 # Folder which program will search for new files
-download_folder="/Users/"$username"/Music/Amazon Music"
+download_folder="/Users/"$username"/Music/deemix Music"
 
 # Folder into which program will copy new files from download folder
 unsorted_folder="/Users/"$username"/Music/new_"$filetype"s"
@@ -196,5 +196,7 @@ check_files
 # Runs function to copy all new files from unorganized folder into organized folders
 cd "$unsorted_folder"
 sort_files
+
+echo "Done copying files from" "$unsorted_folder"
 
 
